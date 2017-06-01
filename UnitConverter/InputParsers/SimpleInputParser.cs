@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnitConverter.BO;
 using UnitConverter.Classes;
+using UnitConverter.Helpers;
 
 namespace UnitConverter.InputParsers
 {
@@ -93,7 +94,7 @@ namespace UnitConverter.InputParsers
 
         private bool ValidateSource(string source)
         {
-            return new Regex(@"^\d+(\.\d+){0,1}\s{1}\w+$").IsMatch(source);
+            return new Regex(string.Concat(@"^\d+(\", Localization.NumberDecimalSeparator, @"\d+){0,1}\s{1}\w+$")).IsMatch(source);
         }
 
         private bool ValidateTarget(string target)
@@ -105,7 +106,7 @@ namespace UnitConverter.InputParsers
         {
             double value = 0;
 
-            var valueRaw = Regex.Matches(source, @"^\d+(\.\d+){0,1}")[0].Groups[0].Value;
+            var valueRaw = Regex.Matches(source, string.Concat(@"^\d+(\", Localization.NumberDecimalSeparator, @"\d+){0,1}"))[0].Groups[0].Value;
 
             if (!double.TryParse(valueRaw, out value))
                 throw new Exception("Source value has incorrect format.");

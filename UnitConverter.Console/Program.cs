@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnitConverter.Classes;
 using UnitConverter.Enums;
+using UnitConverter.Helpers;
 
 namespace UnitConverter
 {
@@ -41,7 +43,7 @@ namespace UnitConverter
             Console.WriteLine("Please note, that plural form of a unit is not fully supported.");
             Console.WriteLine("To sign out of the console, type 'exit' and press ENTER.\n");
             Console.WriteLine("Enter a value to convert, for example:");
-            Console.WriteLine("\t1.45 kilometres, gigafoot");
+            Console.WriteLine($"\t1{Localization.NumberDecimalSeparator}45 kilometres, gigafoot");
         }
 
         #endregion
@@ -72,7 +74,10 @@ namespace UnitConverter
         {
             var units = input.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            return _converter.Convert(units[0], units[1]);
+            return
+                Localization.NumberDecimalSeparator == '.'
+                    ? _converter.Convert(units[0], units[1])
+                    : _converter.Convert(string.Concat(units[0], units[1]), units[2]);
         }
 
         private static void DisplayResult(ConverterOutput output)
@@ -110,13 +115,7 @@ namespace UnitConverter
 
         private static bool HasCorrectLenght(string input)
         {
-            var units = input.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            if (units.Length != InputLenght && units.All(i => !string.IsNullOrWhiteSpace(i)))
-            {
-                Console.WriteLine("Incorrect lenght of the input.");
-                return false;
-            }
-            return true;
+            return new Regex(string.Concat(@"^\d+(\", Localization.NumberDecimalSeparator, @"\d+){0,1}\s{1}\w+\,\s+\w+$")).IsMatch(input);
         }
 
         #endregion

@@ -46,6 +46,7 @@
     <Compile Include="Classes\ConverterOutput.cs" />
     <Compile Include="Classes\UnitItem.cs" />
     <Compile Include="Enums\OutputStatus.cs" />
+    <Compile Include="Helpers\Localization.cs" />
     <Compile Include="InputParsers\IInputParser.cs" />
     <Compile Include="InputParsers\SimpleInputParser.cs" />
     <Compile Include="UnitConverter.cs" />
